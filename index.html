@@ -5,8 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ESCAPA DE LOS PROFESORES</title>
 <link rel="stylesheet" href="css/style.css">
+<style>
+
+/* Acceso de cuentas Supabase */
+#account-gate{position:fixed;inset:0;z-index:100000;background:rgba(5,9,18,.96);display:flex;align-items:center;justify-content:center;padding:18px;color:#f7f8ff;font-family:Arial,sans-serif}
+#account-gate[hidden]{display:none!important}
+#account-gate .auth-card{width:min(440px,100%);box-sizing:border-box;background:#172033;border:1px solid #596985;border-radius:16px;padding:26px;box-shadow:0 20px 70px #000b}
+#account-gate h2{margin:0 0 8px;font-size:25px;color:#fff}
+#account-gate p{color:#c6d0e0;line-height:1.45}
+#account-gate label{display:block;margin:13px 0 5px;font-weight:bold}
+#account-gate input{box-sizing:border-box;width:100%;padding:12px;border-radius:8px;border:1px solid #71809a;background:#0d1422;color:white;font-size:16px}
+#account-gate button{padding:11px 15px;border:0;border-radius:8px;cursor:pointer;font-weight:bold;margin:12px 7px 0 0}
+#auth-submit{background:#42b883;color:#07130d}#auth-toggle{background:#34445f;color:white}
+#auth-message{min-height:24px;color:#ffd479;font-size:14px;overflow-wrap:anywhere}
+#account-bar{position:fixed;right:12px;top:12px;z-index:99998;background:#172033eF;color:white;padding:8px 12px;border-radius:10px;font:13px Arial,sans-serif;box-shadow:0 3px 15px #0006}
+#account-bar[hidden]{display:none!important}#account-bar button{margin-left:8px;border:0;border-radius:6px;padding:5px 8px;cursor:pointer}
+
+</style>
 </head>
 <body>
+
+<div id="account-gate" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+  <div class="auth-card">
+    <h2 id="auth-title">ESCAPA DE LOS PROFESORES</h2>
+    <p id="auth-description">Inicia sesión o crea una cuenta para guardar tus puntos y trajes en la nube.</p>
+    <form id="auth-form">
+      <label for="auth-nickname">Nickname o alias</label>
+      <input id="auth-nickname" type="text" autocomplete="username" required minlength="3" maxlength="20" pattern="[A-Za-z0-9_]+" placeholder="Ejemplo: Luis123">
+      <label for="auth-password">Contraseña</label>
+      <input id="auth-password" type="password" autocomplete="current-password" required minlength="8" maxlength="72" placeholder="Mínimo 8 caracteres">
+      <div id="auth-message" role="status" aria-live="polite"></div>
+      <button id="auth-submit" type="submit">Iniciar sesión</button>
+      <button id="auth-toggle" type="button">No tengo cuenta</button>
+    </form>
+    <p style="font-size:12px">Usa un nickname de 3 a 20 caracteres (letras, números o guion bajo) y una contraseña de al menos 8 caracteres. No necesitas correo electrónico.</p>
+  </div>
+</div>
+<div id="account-bar" hidden><span id="account-name"></span><button id="auth-logout" type="button">Cerrar sesión</button></div>
+
 <div id="app">
   <canvas id="game"></canvas>
 
@@ -159,8 +195,7 @@
   </div>
 </div>
 
-<script src="js/data.js"></script>
-<script src="js/music.js"></script>
-<script src="js/game.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
 </body>
 </html>

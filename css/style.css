@@ -633,3 +633,18 @@ button { font-family: inherit; }
   .skin-foot .ghost { width: 100%; }
   .skin-preview { height: 180px; }
 }
+
+
+/* Acceso de cuentas Supabase */
+#account-gate{position:fixed;inset:0;z-index:100000;background:rgba(5,9,18,.96);display:flex;align-items:center;justify-content:center;padding:18px;color:#f7f8ff;font-family:Arial,sans-serif}
+#account-gate[hidden]{display:none!important}
+#account-gate .auth-card{width:min(440px,100%);box-sizing:border-box;background:#172033;border:1px solid #596985;border-radius:16px;padding:26px;box-shadow:0 20px 70px #000b}
+#account-gate h2{margin:0 0 8px;font-size:25px;color:#fff}
+#account-gate p{color:#c6d0e0;line-height:1.45}
+#account-gate label{display:block;margin:13px 0 5px;font-weight:bold}
+#account-gate input{box-sizing:border-box;width:100%;padding:12px;border-radius:8px;border:1px solid #71809a;background:#0d1422;color:white;font-size:16px}
+#account-gate button{padding:11px 15px;border:0;border-radius:8px;cursor:pointer;font-weight:bold;margin:12px 7px 0 0}
+#auth-submit{background:#42b883;color:#07130d}#auth-toggle{background:#34445f;color:white}
+#auth-message{min-height:24px;color:#ffd479;font-size:14px;overflow-wrap:anywhere}
+#account-bar{position:fixed;right:12px;top:12px;z-index:99998;background:#172033eF;color:white;padding:8px 12px;border-radius:10px;font:13px Arial,sans-serif;box-shadow:0 3px 15px #0006}
+#account-bar[hidden]{display:none!important}#account-bar button{margin-left:8px;border:0;border-radius:6px;padding:5px 8px;cursor:pointer}
