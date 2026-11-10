@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ESCAPA DE LOS PROFESORES</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="game"></canvas>
+
+  <!-- ================= MENU ================= -->
+  <div class="screen" id="screen-start">
+    <div class="panel">
+      <h1>ESCAPA DE LOS PROFESORES</h1>
+      <p class="sub">Colegio San Patricio · 4º de secundaria · 8 minutos de clase... o de fuga</p>
+      <div class="cols">
+        <div class="card">
+          <h2 id="howto">Cómo funciona</h2>
+          <ul>
+            <li>10 jugadores: <b>tú + 9 IA</b> (máximo 10).</li>
+            <li><b>50 %</b> de ser <b>estudiante</b> y <b>50 %</b> de ser <b>profesor</b>.</li>
+            <li>Duración <b>8:00</b>. Empieza de día; cada <b>2:00</b> cambia entre día y noche. La primera noche cae a las <b>6:00</b>.</li>
+            <li>3 profesores: <b>Profe Rojas</b>, <b>Profe Cáceres</b> y <b>Profe Quispe</b>.</li>
+            <li>14 <b>misiones</b>: 4 de tiempo en las aulas (cada acierto resta <b>20 s</b>), 4 de refuerzo en salas especiales (solo dan puntos) y 6 <b>tareas de limpieza</b> (recoge 5 objetos antes de que acabe el tiempo). Las IA también pueden limpiar cuando tú eres profesor.</li>
+            <li>Antes de empezar todos eligen personaje (tú y las IA).</li>
+            <li>La partida abre con una <b>presentación animada de los tres profesores</b>; puedes saltarla con <b>ESPACIO</b> o un clic.</li>
+            <li>Las IA son tácticas: <b>huyen, rodean, patrullan</b> y usan sus habilidades con visión y memoria.</li>
+            <li>Cada profesor tiene su propia <b>música de persecución</b>; cambia según quién te esté cazando. Pulsa <b>M</b> para silenciarla.</li>
+            <li>Las <b>puertas</b> de las aulas se abren al acercarte y se cierran al alejarte; cada una muestra el código de su sala.</li>
+            <li>Los <b>golpes cuerpo a cuerpo</b> tienen animación de barrido, estela del arma y chispas de impacto; cada sala tiene su propio suelo decorado.</li>
+            <li>Gana <b>Puntos de examen</b> con misiones, apuntes, rachas de aciertos, victorias y estudiantes reprobados. Cámbialos por <b>trajes</b> para alumnos y profesores.</li>
+            <li>Los <b>apuntes dorados</b> valen <b>10 pts</b>, cada <b>3 aciertos seguidos</b> dan <b>+5 pts</b> y la <b>primera misión del día</b> paga <b>+15 pts</b>.</li>
+            <li>Por el mapa aparecen <b>Inca Kola</b>, <b>pan con jamón</b>, <b>arroz con leche</b>, <b>chicha morada</b>, <b>empanadas</b> y <b>lúcumas</b>: curan vida, dan velocidad temporal o ambas cosas. También las recogen las IA estudiantes.</li>
+            <li>Si gana cualquiera de los dos bandos, verás su <b>celebración</b> con confeti y brazos arriba. Al ganar los estudiantes, festejan solo los <b>supervivientes</b>.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Objetivo</h2>
+          <ul>
+            <li><b>Estudiante:</b> no hay salida: sobrevive hasta el <b>8:00</b>. Si al acabar el tiempo queda algún estudiante en pie, <b>ganan los estudiantes</b>.</li>
+            <li><b>Profesor:</b> deja a los 7 estudiantes sin vida antes del final.</li>
+            <li><b>Misiones:</b> entra en un aula o sala especial y pulsa <b>E</b> junto a la terminal. Las de preguntas tienen 5 opciones; las de tiempo recortan <b>20 s</b> por acierto y las de refuerzo dan puntos extra sin tocar el reloj. Las <b>tareas de limpieza</b> te piden recoger 5 objetos por la sala antes de que se acabe el tiempo.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Controles</h2>
+          <ul>
+            <li><b>WASD</b> / <b>flechas</b>: moverte.</li>
+            <li><b>ESPACIO</b>: habilidad (estudiante) / primera habilidad (profesor).</li>
+            <li><b>Q</b>: segunda habilidad de Morante y Luis.</li>
+            <li><b>1 2 3</b>: las 3 habilidades del profesor.</li>
+            <li><b>E</b>: empezar la misión cercana.</li>
+            <li><b>1–4</b>: responder; <b>ENTER</b>: confirmar.</li>
+            <li><b>M</b>: activar o silenciar la música de persecución.</li>
+            <li><b>ESC</b>: pausa / salir de la misión.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="menu-wallet">
+        <span>PUNTOS DE EXAMEN</span>
+        <b id="menu-points">0</b>
+        <em>Gana misiones, apuntes, rachas y partidas</em>
+      </div>
+      <div class="menu-actions">
+        <button class="big" id="btn-play">JUGAR</button>
+        <button class="big secondary" id="btn-skins">TRAJES</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SELECCION ================= -->
+  <div class="screen hidden" id="screen-select">
+    <div class="panel wide">
+      <div id="role-roll" class="roll">Sorteando rol...</div>
+      <h2 id="select-title">Elige tu personaje</h2>
+      <p class="sub" id="roster-info"></p>
+      <div id="char-grid" class="grid"></div>
+      <h3>Compañeros y rivales (IA)</h3>
+      <div id="ai-list" class="ai-list"></div>
+      <button class="big" id="btn-start" disabled>COMENZAR PARTIDA</button>
+    </div>
+  </div>
+
+  <!-- ================= TRAJES ================= -->
+  <div class="screen hidden" id="screen-skins">
+    <div class="panel wide skins-panel">
+      <div class="skins-head">
+        <div>
+          <div class="skins-kicker">ARMARIO DEL COLEGIO</div>
+          <h2>TRAJES</h2>
+          <p class="sub skins-sub">Hay <b>99 trajes</b> (11 por personaje) y los nuevos añaden animaciones propias. Cada traje cambia el aspecto del personaje y el diseño de sus habilidades. Las IA también se reparten trajes al azar en cada partida. Los puntos de examen se conservan aunque cierres el juego.</p>
+        </div>
+        <div class="wallet">
+          <span>PUNTOS DE EXAMEN</span>
+          <b id="skin-points">0</b>
+        </div>
+      </div>
+      <div class="skin-tabs" id="skin-tabs">
+        <button class="skin-tab on" data-kind="student">ALUMNOS</button>
+        <button class="skin-tab" data-kind="teacher">PROFESORES</button>
+      </div>
+      <div class="skin-chars" id="skin-chars"></div>
+      <div class="skin-list" id="skin-list"></div>
+      <div class="skin-foot">
+        <div class="skin-earn">
+          <b>¿CÓMO SE GANAN?</b>
+          <span>+3 por respuesta correcta · +8 por completar misión · +8 por estudiante reprobado · +40/+55 por victoria · +4 por superviviente</span>
+        </div>
+        <button class="ghost" id="btn-skins-back">VOLVER AL MENÚ</button>
+      </div>
+      <div id="skin-toast" class="skin-toast" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <!-- ================= FINAL ================= -->
+  <div class="screen hidden" id="screen-end">
+    <div class="panel">
+      <canvas id="end-celebration" width="940" height="240" aria-hidden="true"></canvas>
+      <h1 id="end-title">Resultado</h1>
+      <p class="sub" id="end-reason"></p>
+      <div id="end-stats" class="stats"></div>
+      <div id="end-reward" class="reward-box"></div>
+      <button class="big" id="btn-again">JUGAR OTRA VEZ</button>
+    </div>
+  </div>
+
+  <!-- ================= PAUSA ================= -->
+  <div class="screen hidden" id="screen-pause">
+    <div class="panel small">
+      <h2>PAUSA</h2>
+      <button class="big" id="btn-resume">SEGUIR JUGANDO</button>
+      <button class="ghost" id="btn-music">MÚSICA: ON</button>
+      <button class="ghost" id="btn-quit">Volver al menú</button>
+    </div>
+  </div>
+
+  <!-- ================= MISIÓN DE CLASE ================= -->
+  <div class="screen hidden mission" id="screen-mission">
+    <div class="panel quiz">
+      <div class="quiz-top">
+        <div class="quiz-badge" id="quiz-badge">M</div>
+        <div class="quiz-heading">
+          <h2 id="quiz-title">MISIÓN DE MATEMÁTICAS</h2>
+          <p id="quiz-room">Aula 4A · 5 preguntas</p>
+        </div>
+        <div class="quiz-dots" id="quiz-dots"></div>
+      </div>
+      <div class="quiz-bar"><i id="quiz-progress"></i></div>
+      <p class="quiz-q" id="quiz-question"></p>
+      <div class="quiz-opts" id="quiz-options"></div>
+      <p class="quiz-feedback" id="quiz-feedback"></p>
+      <div class="quiz-foot">
+        <span id="quiz-hint">Las misiones de tiempo restan segundos; las de refuerzo y las tareas de limpieza dan puntos. ¡La partida sigue!</span>
+        <button class="ghost" id="btn-quiz-close">SALIR (ESC)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/music.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
